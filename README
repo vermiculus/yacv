@@ -1,6 +1,10 @@
 -*- mode: org -*-
 Copyright 2013 S. Allred
 
+Yet Another CV is a transparant and extensible framework for the
+logical representation and presentation of resumes and curricula
+vitae.
+
 Please report any bugs and feature requests on GitHub:
 
     http://www.github.com/vermiculus/yacv
