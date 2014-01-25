@@ -1,0 +1,23 @@
+\ProvidesExplPackage
+{yacv.abbreviations.presentation.simple}
+{2014/01/25}
+{0.1}
+{Simple abbreviations}
+
+\yacv_module_define_load:nnn {
+  abbreviations
+} {
+  simple
+} {
+  \SetAcronymHandler
+    \yacv_abbreviations_presentation_simple:n
+}
+
+\cs_new_nopar:Nn \yacv_abbreviations_presentation_simple:n {
+  \seq_set_split:Nnn \l_tmpa_seq {} { #1 }
+  \seq_use:Nn \l_tmpa_seq {.\,}
+  .
+}
+
+\cs_generate_variant:Nn
+  \yacv_abbreviations_presentation_simple:n { V }

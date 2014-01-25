@@ -1,0 +1,11 @@
+* TODO Clearly separate logical structure from presentation
+- [ ] \daterange is not only unreasonable to reserve as a
+  document-level command, it is also defined in a logical layer where
+  it should be defined as presentation.
+* TODO Use expl3 lengths for \LeftIndent
+#+BEGIN_SRC LaTeX
+  \UseYACVModules{
+    employment={spaced,cramped},
+    education=cramped,
+  }
+#+END_SRC

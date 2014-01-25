@@ -1,0 +1,13 @@
+\ProvidesExplPackage
+{yacv.abbreviations.logic}
+{2014/01/25}
+{0.1}
+{Abbreviation support in yaCV}
+
+\yacv_module_define_load:nn { abbreviations } {
+  \SetAcronymHandler\relax
+}
+
+\NewDocumentCommand \SetAcronymHandler { m } {
+  \cs_set_eq:NN \yacv_abbreviation_typeset:n #1
+}
