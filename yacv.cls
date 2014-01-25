@@ -93,10 +93,10 @@
 %%% Creating Module-Level Loaders %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\cs_new:Nn \yacv_module_define_load:nn {
+\cs_new:Nn \yacv_module_define_init:nn {
   \cs_new:cpn { \__yacv_module_create_loader_name:n  { #1 }        } { #2 }
 }
 
-\cs_new:Nn \yacv_module_define_load:nnn {
+\cs_new:Nn \yacv_module_define_init:nnn {
   \cs_new:cpn { \__yacv_module_create_loader_name:nn { #1 } { #2 } } { #3 }
 }
