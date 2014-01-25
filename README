@@ -1,6 +1,12 @@
 -*- mode: org -*-
 Copyright 2013 S. Allred
 
+Please report any bugs and feature requests on GitHub:
+
+    http://www.github.com/vermiculus/yacv
+
+----------------------------------------------------------------------
+
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License, either version 1.3
 of this license or (at your option) any later version.
@@ -13,25 +19,13 @@ This work has the LPPL maintenance status `maintained'.
  
 The Current Maintainer of this work is Sean Allred.
 
-This work consists of the following files:
-
-    yacv.cls
-    yacv.edu.sty
-    yacv.header.sty
-    yacv.helper.sty
-    yacv.position.sty
-    yacv.project.sty
-    yacv.textfile.sty
-
-yaCV and all built-in sub-packages included in this distribution are
+yaCV consists of =yacv.cls= and all component modules listed under
+"Included Files", and everything included in this distribution is
 released under the LPPL v1.3 or later.
 
+* Introduction
 yaCV is a transparant and extensible framework for the logical
 representation and presentation of resumes and curricula vitae.
-
-Please report any bugs and feature requests on GitHub:
-
-    http://www.github.com/vermiculus/yacv
 
 * Organization
 ** Meta
@@ -75,3 +69,10 @@ in setup macro, load all logic and presentation through
 =\yacv_<module>__load:= and add =\yacv_<module>__initialize:= to
 =\AtBeginDocument=.
 ** TODO might be weird.  test.
+* Included Files
+Each file listed here is released under the same license as =yacv.cls=.
+
+- yacv.abbreviations :: Abbreviation support
+  - yacv.abbreviations.logic.sty
+  - yacv.abbreviations.presentation.simply.sty
+
