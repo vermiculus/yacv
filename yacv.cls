@@ -123,3 +123,28 @@
 \cs_new:Nn \yacv_module_define_init:nnn {
   \cs_new:cpn { \__yacv_module_create_loader_name:nn { #1 } { #2 } } { #3 }
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Using Module-Level Loaders %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new:Nn \yacv_module_initialize:n {
+  \cs_if_exist_use:cF {
+    \__yacv_module_create_loader_name:n { #1 }
+  } {
+    \msg_info:nnn { yacv } { module-no-init } { #1 }
+  }
+}
+
+\cs_new:Nn \yacv_module_initialize:nn {
+  \cs_if_exist_use:cF {
+    \__yacv_module_create_loader_name:nn { #1 } { #2 }
+  } {
+    \msg_info:nnnn { yacv} { presentation-no-init } { #1 } { #2 }
+  }
+}
+
+\cs_generate_variant:Nn \yacv_module_initialize:n
+  { V }
+\cs_generate_variant:Nn \yacv_module_initialize:nn
+  { V , VV }
