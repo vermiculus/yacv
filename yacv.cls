@@ -11,12 +11,35 @@
 \LoadClass{article}
 
 \msg_new:nnnn { yacv } { module-not-found } {
-  The ~ `#1` ~ module ~ is ~ not ~ available. ~  ~ 
+  The ~ `#1` ~ module ~ is ~ not ~ available. ~  ~
   Please ~ install ~ it.
 } {
   yaCV ~ looked ~ in ~ the ~ path ~ TeX ~ was ~ given ~ for ~ files ~
-  and ~ could ~ not ~ find ~ the ~ file ~ `yacv.#1.logic.sty`. ~  ~ 
+  and ~ could ~ not ~ find ~ the ~ file ~ `yacv.#1.logic.sty`. ~  ~
   Please ~ find ~ this ~ file ~ and ~ put ~ it ~ in ~ an ~ appropriate ~ place.
+}
+
+\msg_new:nnnn { yacv } { presentation-not-found } {
+  The ~ presentation ~ `#2` ~ for ~ the ~ `#1` ~ module ~ is ~ not ~ available. ~  ~
+  Please ~ install ~ it.
+} {
+  yaCV ~ looked ~ in ~ the ~ path ~ TeX ~ was ~ given ~ for ~ files ~
+  and ~ could ~ not ~ find ~ the ~ file ~ `yacv.#1.presentation.#2.sty`. ~  ~
+  Please ~ find ~ this ~ file ~ and ~ put ~ it ~ in ~ an ~ appropriate ~ place.
+}
+
+\msg_new:nnnn { yacv } { module-no-init } {
+  The ~ `#1` ~ module ~ has ~ no ~ initialization ~ function. ~  ~
+  This ~ should ~ probably ~ be ~ added ~ for ~ the ~ sake ~ of ~ completion.
+} {
+  The ~ `yacv_#1__load:` ~ function ~ was ~ not ~ defined.
+}
+
+\msg_new:nnnn { yacv } { presentation-no-init } {
+  The ~ presentation ~ `#2` ~ for ~ the ~ `#1` ~ module  ~ has ~ no ~ initialization ~ function. ~  ~
+  This ~ should ~ probably ~ be ~ added ~ for ~ the ~ sake ~ of ~ completion.
+} {
+  The ~ `yacv_#1__load:` ~ function ~ was ~ not ~ defined.
 }
 
 \clist_new:N \g_yacv_module_modules_clist
