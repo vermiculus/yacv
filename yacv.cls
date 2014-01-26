@@ -45,58 +45,104 @@
 \clist_new:N \g_yacv_module_modules_clist
 
 \NewDocumentCommand \yaCV { m } {
+  % the first run loads all of the logical definitions
+  \keys_set:nn { yacv } { #1 }
+  % where the second run loads all of the presentational definitions
   \keys_set:nn { yacv } { #1 }
 }
 
 \keys_define:nn { yacv } {
   unknown .code:n =
-  \file_if_exist:nTF { \__yacv_module_create_name:V \l_keys_key_tl .sty } {
-    \RequirePackage {
-      \__yacv_module_create_name:V \l_keys_key_tl
-    }
-    
-    \cs_if_exist_use:c {
-      \__yacv_module_create_loader_name:V \l_keys_key_tl
-    }
-    
-    \clist_set:Nn \l_tmpa_clist { #1 }
+    \yacv_module_logic_load:Vn \l_keys_key_tl { #1 }
+
+    % Is there a way to do this that isn't *awful*?
+    \clist_set:No \l_tmpa_clist { \l_keys_key_tl }
     \clist_map_inline:Nn \l_tmpa_clist {
-      \yacv_module_defer_load_presentation:Vn \l_keys_key_tl { ##1 }
+      \keys_define:nn { yacv } {
+        ##1 .tl_set:c = { l_yacv_##1_logic_options_tl },
+      }
+    },
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Loading Modules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new:Nn \yacv_module_logic_load:nn {
+  \file_if_exist:nTF { \__yacv_module_create_module_file_name:n { #1 } } {
+    \keys_define:nn { yacv } {
+      #1 .tl_set:c = { l_yacv_#1_logic_options_tl }
+    }
+    \keys_set:nn { yacv } { #1 = #2 }
+
+    \RequirePackage {
+      \__yacv_module_create_module_name:n { #1 }
+    }
+
+    \yacv_module_initialize:n { #1 }
+
+    \clist_set:Nn \l_tmpa_clist { #2 }
+    \clist_if_empty:NTF \l_tmpa_clist {
+      \AtBeginDocument{
+        \yacv_module_load:nn { #1 } { default }
+      }
+    } {
+      \clist_map_inline:Nn \l_tmpa_clist {
+        \AtBeginDocument{
+          \yacv_module_load:nn { #1 } { ##1 }
+        }
+      }
     }
 
     \clist_gpush:Nx \g_yacv_module_modules_clist {
-      \__yacv_module_create_name:V \l_keys_key_tl
+      \__yacv_module_create_module_name:n { #1 }
     }
   } {
-    \msg_error:nnx { yacv } { module-not-found } \l_keys_key_tl
+    \msg_error:nnn { yacv } { module-not-found } { #1 }
   }
 }
+\cs_generate_variant:Nn \yacv_module_logic_load:nn { V , VV }
 
-\cs_new:Nn \yacv_module_defer_load_presentation:nn {
-  \AtBeginDocument{
-    \RequirePackage { yacv . #1 . presentation . #2 }
-    \cs_if_exist_use:c { \__yacv_module_create_loader_name:nn { #1 } { #2 } }
+\cs_generate_variant:Nn \file_if_exist:nTF { V }
+\cs_new:Nn \yacv_module_load:nn {
+  \file_if_exist:nTF { \__yacv_module_create_presentation_file_name:nn { #1 } { #2 } } {
+    \RequirePackage { \__yacv_module_create_presentation_name:nn { #1 } { #2 } }
+    \yacv_module_initialize:nn { #1 } { #2 }
 
     \clist_gpush:No \g_yacv_module_modules_clist {
-      \__yacv_module_create_name:nn { #1 } { #2 }
+      \__yacv_module_create_presentation_name:nn { #1 } { #2 }
     }
+  } {
+    \msg_error:nnnn { yacv } { presentation-not-found } { #1 } { #2 }
   }
 }
-\cs_generate_variant:Nn \yacv_module_defer_load_presentation:nn { V }
+\cs_generate_variant:Nn
+  \yacv_module_load:nn { V , VV }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Creatine Module Names %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Creating Module Names %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\cs_new:Nn \__yacv_module_create_name:n {
+\cs_new:Nn \__yacv_module_create_module_name:n {
   yacv . #1 . logic
 }
-\cs_generate_variant:Nn \__yacv_module_create_name:n { V }
+\cs_generate_variant:Nn \__yacv_module_create_module_name:n { V }
 
-\cs_new:Nn \__yacv_module_create_name:nn {
+\cs_new:Nn \__yacv_module_create_module_file_name:n {
+  \__yacv_module_create_module_name:n { #1 } .sty
+}
+\cs_generate_variant:Nn \__yacv_module_create_module_file_name:n { V }
+
+\cs_new:Nn \__yacv_module_create_presentation_name:nn {
   yacv . #1 . presentation . #2
 }
-\cs_generate_variant:Nn \__yacv_module_create_name:nn { V }
+\cs_generate_variant:Nn \__yacv_module_create_presentation_name:nn { V }
+
+\cs_new:Nn \__yacv_module_create_presentation_file_name:nn {
+  \__yacv_module_create_presentation_name:nn { #1 } { #2 } .sty
+}
+\cs_generate_variant:Nn \__yacv_module_create_presentation_file_name:nn { V }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Creating Loader Names %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
